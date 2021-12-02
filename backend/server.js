@@ -14,11 +14,15 @@ const fs = require('fs')
 var fs2 = _interopRequireDefault(fs);
 
 const cors = require('cors')
-var app = (0, express2.default)();
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 // const app = express()
-app.use(express2.default.static('public'));
+var options = {
+	index: 'index.html'
+};
+var app = (0, express2.default)();
+
+app.use(express2.default.static('frontend'));
 app.use('/.well-known', express2.default.static('.well-known'));
 app.use(bodyParser2.default.json());
 // app.use(bodyParser.json())
