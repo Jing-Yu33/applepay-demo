@@ -72,11 +72,12 @@ app.post('/validateSession', (req, res) => {
   axios
     .post(
       // appleUrl,
-      "https://apple-pay-gateway-cert.apple.com/paymentservices/startSession",
+      "https://apple-pay-gateway-cert.apple.com/paymentservices/paymentSession",
       {
         merchantIdentifier: '211CF14E7604A38BCA391348A8576CE408D25A64AD201C235D9D64E5BAAE55F0',
-        domainName: 'https://enigmatic-retreat-54006.herokuapp.com',
-        displayName: 'wepay test'
+        displayName: 'wepay test',
+        initiative: "web",
+        initiativeContext: "https://enigmatic-retreat-54006.herokuapp.com"
       },
       
       { httpsAgent, 
@@ -85,6 +86,7 @@ app.post('/validateSession', (req, res) => {
         } }
     )
     .then(function (response) {
+        console.log("response from apple pay: " + JSON.stringify(response))
       res.send(response.data)
     })
   // if (!req.body.appleUrl) return res.sendStatus(400);
