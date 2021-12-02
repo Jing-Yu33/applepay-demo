@@ -75,7 +75,7 @@ app.post('/validateSession', (req, res) => {
       "https://apple-pay-gateway-cert.apple.com/paymentservices/startSession",
       {
         merchantIdentifier: '211CF14E7604A38BCA391348A8576CE408D25A64AD201C235D9D64E5BAAE55F0',
-        domainName: 'https://sleepy-lowlands-88131.herokuapp.com',
+        domainName: 'https://enigmatic-retreat-54006.herokuapp.com',
         displayName: 'wepay test'
       },
       
