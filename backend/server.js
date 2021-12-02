@@ -72,7 +72,7 @@ app.post('/validateSession', (req, res) => {
   axios
     .post(
       // appleUrl,
-      "https://apple-pay-gateway-cert.apple.com/paymentservices/paymentSession",
+      "https://apple-pay-gateway-cert.apple.com/paymentservices/startSession",
       {
         merchantIdentifier: '211CF14E7604A38BCA391348A8576CE408D25A64AD201C235D9D64E5BAAE55F0',
         displayName: 'wepay test',
