@@ -1,5 +1,3 @@
-var applePayWebVersion = 6;
-
 /**
  * This is a UI controller meant to handle any UI interaction
  *
@@ -31,46 +29,42 @@ var applePayUiController = (function () {
  *
  */
 var applePayController = (function (uiController) {
+  
   var BACKEND_URL_VALIDATE_SESSION = 'https://enigmatic-retreat-54006.herokuapp.com/validateSession'
-
-  // High level configuration options.
-  // var config = {
-  //   payments: {
-  //     acceptedCardSchemes: ['amex', 'masterCard', 'maestro', 'visa', 'mada']
-  //   },
-  //   shop: {
-  //     product_price: 4.0,
-  //     shop_name: 'Demo Shop',
-  //     shop_localisation: {
-  //       currencyCode: 'USD',
-  //       countryCode: 'US'
-  //     }
-  //   },
-  //   shipping: {
-  //     US_region: [
-  //       {
-  //         label: 'Free Shipping',
-  //         amount: '0.00',
-  //         detail: 'Arrives in 3-5 days',
-  //         identifier: 'freeShipping'
-  //       },
-  //       {
-  //         label: 'Express Shipping',
-  //         amount: '5.00',
-  //         detail: 'Arrives in 1-2 days',
-  //         identifier: 'expressShipping'
-  //       }
-  //     ],
-  //     WORLDWIDE_region: [
-  //       {
-  //         label: 'Worldwide Standard Shipping',
-  //         amount: '10.00',
-  //         detail: 'Arrives in 5-8 days',
-  //         identifier: 'worldwideShipping'
-  //       }
-  //     ]
-  //   }
-  // }
+  var BACKEND_URL_PAY = 'https://enigmatic-retreat-54006.herokuapp.com/pay'
+  
+  var applePayWebVersion = 6;
+  
+  var paymentRequest = {
+    currencyCode: 'USD',
+    countryCode: 'US',
+    merchantCapabilities: [
+      'supports3DS',
+      'supportsEMV',
+      'supportsCredit',
+      'supportsDebit'
+    ],
+    supportedNetworks: ["visa", "mastercard", "amex", "discover"],
+    shippingMethods: [
+      {
+        label: 'Free Shipping',
+        amount: '0.00',
+        identifier: 'free',
+        detail: 'Delivers in five business days',
+      },
+      {
+        label: 'Express Shipping',
+        amount: '5.00',
+        identifier: 'express',
+        detail: 'Delivers in two business days',
+      },
+    ],
+    total: {
+      label: "Demo (Card is not charged",
+      amount: "1.99",
+      type: 'final'
+    }
+  }
 
   /**
    * Checks if Apple Pay is possible in the current environment.
@@ -98,53 +92,9 @@ var applePayController = (function (uiController) {
     document
       .getElementById(uiController.DOMStrings.appleButton)
       .addEventListener('click', function () {
-        _startApplePaySession({
-          currencyCode: 'USD',
-          countryCode: 'US',
-          merchantCapabilities: [
-            'supports3DS',
-            'supportsEMV',
-            'supportsCredit',
-            'supportsDebit'
-          ],
-          // supportedNetworks: config.payments.acceptedCardSchemes,
-          supportedNetworks: ["visa", "mastercard", "amex", "discover"],
-          // shippingType: 'shipping',
-          // requiredBillingContactFields: [
-          //   'postalAddress',
-          //   'name',
-          //   'phone',
-          //   'email'
-          // ],
-          // requiredShippingContactFields: [
-          //   'postalAddress',
-          //   'name',
-          //   'phone',
-          //   'email'
-          // ],
-          shippingMethods: [
-            {
-              label: 'Free Shipping',
-              amount: '0.00',
-              identifier: 'free',
-              detail: 'Delivers in five business days',
-            },
-            {
-              label: 'Express Shipping',
-              amount: '5.00',
-              identifier: 'express',
-              detail: 'Delivers in two business days',
-            },
-          ],
-          total: {
-            // label: config.shop.shop_name,
-            label: "Demo (Card is not charged",
-            amount: "1.99",
-            type: 'final'
-          }
-        })
-      })
-  }
+        _startApplePaySession(paymentRequest)
+  })
+}
 
   /**
    * This method call your backend server with the Apple Pay validation URL.
@@ -175,24 +125,6 @@ var applePayController = (function (uiController) {
   }
 
   /**
-   * This method returns the available payment methods for a certain region. You can add
-   * your business logic here to determine the shipping methods you need.
-   *
-   * @param {string} 2 Letter ISO of the region
-   *
-   * @return {Array} An array of shipping methods
-   *
-   */
-  // var _getAvailableShippingMethods = function (region) {
-  //   // return the shipping methods available based on region
-  //   if (region === 'US') {
-  //     return { methods: config.shipping.GB_region }
-  //   } else {
-  //     return { methods: config.shipping.WORLDWIDE_region }
-  //   }
-  // }
-
-  /**
    * This is the main method of the script, since here we handle all the Apple Pay
    * events. Here you are able to populate your shipping methods, react to  shipping methods
    * changes, and many other interaction that the user has with the Apple Pay pup-up.
@@ -210,42 +142,6 @@ var applePayController = (function (uiController) {
         appleSession.completeMerchantValidation(merchantSession)
       })
     }
-
-    // This method is triggered before populating the shipping methods. This is the
-    // perfect place inject your shipping methods
-    // appleSession.onshippingcontactselected = function (event) {
-    //   // populate with the availbale shipping methods for the region
-    //   var shipping = _getAvailableShippingMethods(
-    //     config.shop.shop_localisation.countryCode
-    //   )
-    //   // Update total and line items based on the shipping methods
-    //   var newTotal = {
-    //     type: 'final',
-    //     label: config.shop.shop_name,
-    //     amount: _calculateTotal(
-    //       config.shop.product_price,
-    //       shipping.methods[0].amount
-    //     )
-    //   }
-    //   var newLineItems = [
-    //     {
-    //       type: 'final',
-    //       label: 'Subtotal',
-    //       amount: config.shop.product_price
-    //     },
-    //     {
-    //       type: 'final',
-    //       label: shipping.methods[0].label,
-    //       amount: shipping.methods[0].amount
-    //     }
-    //   ]
-    //   appleSession.completeShippingContactSelection(
-    //     ApplePaySession.STATUS_SUCCESS,
-    //     shipping.methods,
-    //     newTotal,
-    //     newLineItems
-    //   )
-    // }
 
     // This method is triggered when a user select one of the shipping options.
     // Here you generally want to keep track of the transaction amount
@@ -268,12 +164,12 @@ var applePayController = (function (uiController) {
 		session.completeShippingMethodSelection(ApplePaySession.STATUS_SUCCESS, total, lineItems);
     }
 
-    // This method is the most important method. It gets triggered after teh user has
+    // This method is the most important method. It gets triggered after the user has
     // confirmed the transaction with the Touch ID or Face ID. Besides getting all the
     // details about the customer you also get the Apple Pay payload needed to perform
     // a payment.
     appleSession.onpaymentauthorized = function (event) {
-      console.log("print event payment data: " + JSON.stringify(event.payment))
+      console.log("Print event payment data: " + JSON.stringify(event.payment))
       _performTransaction(event.payment, function (outcome) {
         if (outcome.approved) {
           appleSession.completePayment(ApplePaySession.STATUS_SUCCESS)
@@ -291,7 +187,6 @@ var applePayController = (function (uiController) {
   }
 
   var _performTransaction = function (details, callback) {
-    // I'm using AXIOS to do a POST request to the backend but any HTTP client can be used
     axios
       .post(
         BACKEND_URL_PAY,
@@ -305,10 +200,6 @@ var applePayController = (function (uiController) {
       .then(function (response) {
         callback(response.data)
       })
-  }
-
-  var _calculateTotal = function (subtotal, shipping) {
-    return (parseFloat(subtotal) + parseFloat(shipping)).toFixed(2)
   }
 
   return {
