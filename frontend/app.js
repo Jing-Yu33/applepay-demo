@@ -268,6 +268,7 @@ var applePayController = (function (uiController) {
     // details about the customer you also get the Apple Pay payload needed to perform
     // a payment.
     appleSession.onpaymentauthorized = function (event) {
+      console.log("print event payment data: " + JSON.stringify(event.payment))
       _performTransaction(event.payment, function (outcome) {
         if (outcome.approved) {
           appleSession.completePayment(ApplePaySession.STATUS_SUCCESS)
