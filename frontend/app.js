@@ -33,7 +33,7 @@ var applePayUiController = (function () {
 var applePayController = (function (uiController) {
   // var BACKEND_URL_VALIDATE_SESSION = 'https://8c7ec229.ngrok.io/validateSession'
   console.log("i'm called")
-  var BACKEND_URL_VALIDATE_SESSION = 'https://sleepy-lowlands-88131.herokuapp.com/validateSession'
+  var BACKEND_URL_VALIDATE_SESSION = 'https://enigmatic-retreat-54006.herokuapp.com/validateSession'
   var BACKEND_URL_PAY = 'https://young-plateau-24326.herokuapp.com/pay'
 
   // High level configuration options.
