@@ -86,7 +86,7 @@ app.post('/validateSession', (req, res) => {
         } }
     )
     .then(function (response) {
-        console.log("response from apple pay: " + JSON.stringify(response))
+        console.log("response from apple pay: " + JSON.stringify(response.data))
       res.send(response.data)
     })
   // if (!req.body.appleUrl) return res.sendStatus(400);
