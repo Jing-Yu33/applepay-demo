@@ -2,13 +2,10 @@ const express = require('express')
 const axios = require('axios')
 const https = require('https')
 const bodyParser = require('body-parser')
-var express2 = _interopRequireDefault(express);
+const express2 = _interopRequireDefault(express);
 
 
-var bodyParser2 = _interopRequireDefault(bodyParser);
-var _request = require('request');
-
-var _request2 = _interopRequireDefault(_request);
+const bodyParser2 = _interopRequireDefault(bodyParser);
 
 const fs = require('fs')
 var fs2 = _interopRequireDefault(fs);
@@ -17,11 +14,11 @@ const cors = require('cors')
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 // const app = express()
-var options = {
-	index: 'index.html'
-};
-var app = (0, express2.default)();
 
+// var options = {
+// 	index: 'index.html'
+// };
+const app = (0, express2.default)();
 app.use(express2.default.static('frontend'));
 app.use('/.well-known', express2.default.static('.well-known'));
 app.use(bodyParser2.default.json());
@@ -34,14 +31,14 @@ app.use(bodyParser2.default.json());
 // const port = process.env.PORT || 8080;
 
 app.use(cors());
-app.options('*', cors());
-app.use(function(req, res, next) {
-  res.header("Access-Control-Allow-Origin", '*'); // update to match the domain you will make the request from
-  res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
-  res.header("Access-Control-Allow-Methods", "GET, POST, DELETE");
+// app.options('*', cors());
+// app.use(function(req, res, next) {
+//   res.header("Access-Control-Allow-Origin", '*'); // update to match the domain you will make the request from
+//   res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+//   res.header("Access-Control-Allow-Methods", "GET, POST, DELETE");
 
-  next();
-});
+//   next();
+// });
 app.listen(process.env.PORT || 5500
 , () => {
   console.log('Server running on port haha')
@@ -51,9 +48,7 @@ app.listen(process.env.PORT || 5500
 var applePayCert = fs2.default.readFileSync('./backend/certificates/certificate_sandbox.pem');
 var applePayKey = fs2.default.readFileSync('./backend/certificates/certificate_sandbox.key');
 
-app.get('/hello', (req, res) => {
-  res.send('Hi!');
-});
+
 // Validate the Apple Pay session
 app.post('/validateSession', (req, res) => {
   const { appleUrl } = req.body
@@ -82,39 +77,13 @@ app.post('/validateSession', (req, res) => {
       
       { httpsAgent, 
         headers: {
-          "Content-Type": "application/json",
+          "Content-Type": "application/json", // TODO: check if this is necessary
         } }
     )
     .then(function (response) {
         console.log("response from apple pay: " + JSON.stringify(response.data))
       res.send(response.data)
     })
-  // if (!req.body.appleUrl) return res.sendStatus(400);
-
-	// console.log("url is here: " + req.body.appleUrl);
-	// // We must provide our Apple Pay certificate, merchant ID, domain name, and display name
-	// var options = {
-	// 	url: req.body.appleUrl,
-	// 	cert: applePayCert,
-	// 	key: applePayCert,
-	// 	method: 'post',
-	// 	body: {
-	// 		merchantIdentifier: 'merchant.com.wepay.test20210301a',
-	// 		domainName: 'https://evening-coast-47090.herokuapp.com',
-	// 		displayName: 'My Store'
-	// 	},
-	// 	json: true
-	// };
-
-	// // Send the request to the Apple Pay server and return the response to the client
-	// (0, _request2.default)(options, function (err, response, body) {
-	// 	if (err) {
-	// 		console.log('Error generating Apple Pay session!');
-	// 		console.log(err, response, body);
-	// 		res.status(500).send(body);
-	// 	}
-	// 	res.send(body);
-	// });
 })
 
 // Tokenise the Apple Pay payload and perform a payment
