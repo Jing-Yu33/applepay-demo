@@ -77,7 +77,7 @@ app.post('/validateSession', (req, res) => {
         merchantIdentifier: '211CF14E7604A38BCA391348A8576CE408D25A64AD201C235D9D64E5BAAE55F0',
         displayName: 'wepay test',
         initiative: "web",
-        initiativeContext: "https://enigmatic-retreat-54006.herokuapp.com"
+        initiativeContext: "enigmatic-retreat-54006.herokuapp.com"
       },
       
       { httpsAgent, 
