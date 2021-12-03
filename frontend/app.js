@@ -31,7 +31,7 @@ var applePayUiController = (function () {
 var applePayController = (function (uiController) {
   
   var BACKEND_URL_VALIDATE_SESSION = 'https://enigmatic-retreat-54006.herokuapp.com/validateSession'
-  var BACKEND_URL_PAY = 'https://enigmatic-retreat-54006.herokuapp.com/pay'
+  // var BACKEND_URL_PAY = 'https://enigmatic-retreat-54006.herokuapp.com/pay'
   
   var applePayWebVersion = 6;
   
@@ -169,38 +169,39 @@ var applePayController = (function (uiController) {
     // details about the customer you also get the Apple Pay payload needed to perform
     // a payment.
     appleSession.onpaymentauthorized = function (event) {
-      console.log("Print event payment data: " + JSON.stringify(event.payment))
-      _performTransaction(event.payment, function (outcome) {
-        if (outcome.approved) {
-          appleSession.completePayment(ApplePaySession.STATUS_SUCCESS)
-          console.log(outcome)
-        } else {
-          appleSession.completePayment(ApplePaySession.STATUS_FAILURE)
-          console.log(outcome)
-        }
-      })
+      // console.log("Print event payment data: " + JSON.stringify(event.payment))
+      // _performTransaction(event.payment, function (outcome) {
+      //   if (outcome.approved) {
+      //     appleSession.completePayment(ApplePaySession.STATUS_SUCCESS)
+      //     console.log(outcome)
+      //   } else {
+      //     appleSession.completePayment(ApplePaySession.STATUS_FAILURE)
+      //     console.log(outcome)
+      //   }
+      // })
+      console.log("Print event.payment data: " + JSON.stringify(event.payment))
     }
 
-    appleSession.oncancel = function (event) {
-      console.log(event)
-    }
+    // appleSession.oncancel = function (event) {
+    //   console.log("Print full response: " + event)
+    // }
   }
 
-  var _performTransaction = function (details, callback) {
-    axios
-      .post(
-        BACKEND_URL_PAY,
-        {
-          details
-        },
-        {
-          headers: { 'Access-Control-Allow-Origin': '*' }
-        }
-      )
-      .then(function (response) {
-        callback(response.data)
-      })
-  }
+  // var _performTransaction = function (details, callback) {
+  //   axios
+  //     .post(
+  //       BACKEND_URL_PAY,
+  //       {
+  //         details
+  //       },
+  //       {
+  //         headers: { 'Access-Control-Allow-Origin': '*' }
+  //       }
+  //     )
+  //     .then(function (response) {
+  //       callback(response.data)
+  //     })
+  // }
 
   return {
     init: function () {

@@ -66,14 +66,14 @@ app.post('/validateSession', (req, res) => {
     })
 })
 
-// Tokenise the Apple Pay payload and perform a payment
-app.post('/pay', (req, res) => {
-  const {
-    version,
-    data,
-    signature,
-    header
-  } = req.body.details.token.paymentData
+// // Tokenise the Apple Pay payload and perform a payment
+// app.post('/pay', (req, res) => {
+//   const {
+//     version,
+//     data,
+//     signature,
+//     header
+//   } = req.body.details.token.paymentData
 
-  res.send(req.body)
-})
+//   res.send(req.body)
+// })
