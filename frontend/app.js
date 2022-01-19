@@ -33,7 +33,7 @@ var applePayController = (function (uiController) {
   var BACKEND_URL_VALIDATE_SESSION = 'https://enigmatic-retreat-54006.herokuapp.com/validateSession'
   // var BACKEND_URL_PAY = 'https://enigmatic-retreat-54006.herokuapp.com/pay'
   
-  var applePayWebVersion = 6;
+  var applePayWebVersion = 3;
   
   var paymentRequest = {
     currencyCode: 'USD',

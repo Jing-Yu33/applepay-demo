@@ -54,11 +54,7 @@ app.post('/validateSession', (req, res) => {
         initiativeContext: "enigmatic-retreat-54006.herokuapp.com"    // verified domain name
       },
       
-      { httpsAgent
-        // headers: {
-        //   "Content-Type": "application/json", // TODO: check if this is necessary
-        // } 
-    }
+      { httpsAgent }
     )
     .then(function (response) {
         console.log("response from apple pay: " + JSON.stringify(response.data))
